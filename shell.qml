@@ -1,6 +1,6 @@
 import QtQuick
 import Quickshell
-import "StatusBar"
+import "bar"
 
 ShellRoot {
     Bar {}
