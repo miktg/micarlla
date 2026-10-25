@@ -2,6 +2,7 @@ import Quickshell
 import QtQuick
 import QtQuick.Controls
 import Quickshell.Wayland
+import QtQuick.Layouts
 import "widgets"
 
 PanelWindow{
@@ -15,8 +16,11 @@ PanelWindow{
         right: true
     }
 
-    height: show ? 30 : 0
-    
+    implicitHeight: show ? 30 : 0
+    Behavior on implicitHeight { 
+        NumberAnimation { duration: 50 } 
+    }
+
     color: "transparent"
 
     exclusionMode: ExclusionMode.Ignore
@@ -27,9 +31,8 @@ PanelWindow{
             radius: 12 
             border.color: "#313244"
             border.width: 1
-            height: show ? 30 : 0
 
-            Behavior on height { NumberAnimation { duration: 150 } }
+            opacity: show ? 1.0 : 0.0
     }
 
     MouseArea {
@@ -38,11 +41,56 @@ PanelWindow{
 
         onEntered: {show = true}        
         onExited: {show = false}
-     }
+    }
 
-    Clock {
-        id: clock
-        anchors.centerIn: parent
-        opacity: show ? 1.0 : 0.0
+    RowLayout {
+        anchors.fill: parent
+        anchors.leftMargin: 15
+        anchors.rightMargin: 15
+        spacing: 15
+
+        // 👈 SEÇÃO ESQUERDA: Fixada no canto esquerdo
+        //BarLeft {
+        //    anchors.left: parent.left
+        //    anchors.verticalCenter: parent.verticalCenter
+        //}
+
+        Item {Layout.fillWidth: true}
+
+        Clock{
+            id: clock
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+            onClicked: {
+                calendar.targetWidget = clock
+                calendar.visible = !calendar.visible 
+            }
+        }
+
+        Calendar {
+            id: calendar
+            visible: false 
+
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true 
+                
+                onEntered: {show = true}        
+                onExited: {show = false}
+            }
+        }
+
+        Item {Layout.fillWidth: true}
+
+        //direita
+        Battery {
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+        }
+
+        Text {
+            text: "Alex"
+            color: "#cdd6f4"
+            font.pixelSize: 12
+        }
     }
 }
