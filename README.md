@@ -1,1 +1,1 @@
-just a basic bar for wayland build in qml
+it is a basic status bar for wayland build in qml. it has a functional clock widget, a calendar, a battery indicator and my pretty name on it :). you can build it from souce or you can download the latest release. to use it, install quickshell and just run it in your terminal and vouila
