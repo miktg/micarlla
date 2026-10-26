@@ -15,18 +15,21 @@ Item {
         spacing: 15
 
         Text {
-            text: battery.icon + " " + battery.percent
-            color: "#cdd6f4"
             font.pixelSize: 12
+            color: "#cdd6f4"
+
+            text: battery.icon + " " + battery.percent
         }
     }
 
+    //le as informacoes reais de armazenamento da bateria
     Process {
         id: reader
         
         command: ["sh", "-c", "cat /sys/class/power_supply/BAT0/capacity"]
         running: true 
 
+        //imprime o resultado da leitura
         stdout: StdioCollector {
             onStreamFinished: {
                 let percentage = text.trim();
@@ -34,16 +37,18 @@ Item {
                 
                 let num = parseInt(percentage);
 
+                //muda o icone depeendendo da porcentagem
                 if (num < 20) battery.icon = "🪫";
                 else battery.icon = "🔋";
             }
         }
     }
 
+    //tempo q os dados atualizam
     Timer {
         interval: 10000
         running: true
         repeat: true
-        onTriggered: reader.running = true // Força o processo a rodar de novo
+        onTriggered: reader.running = true 
     }
 }
